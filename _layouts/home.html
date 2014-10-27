@@ -46,8 +46,7 @@
 
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <b>{{ post.date | date: '%Y-%m-%d' }}</b>
-      {{ post.content }}
+      <p><b>{{ post.date | date: '%Y-%m-%d' }}</b> &nbsp; {{ post.content | remove_first: '<p>' }}
       
     </div><!-- /.article-wrap -->
 

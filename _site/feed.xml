@@ -2,13 +2,13 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
 <title type="text">Long Reads</title>
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
-<link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml" />
-<link rel="alternate" type="text/html" href="http://localhost:4000" />
-<updated>2014-10-26T21:49:46-07:00</updated>
-<id>http://localhost:4000/</id>
+<link rel="self" type="application/atom+xml" href="http://longreads.github.io/feed.xml" />
+<link rel="alternate" type="text/html" href="http://longreads.github.io" />
+<updated>2014-10-26T22:22:33-07:00</updated>
+<id>http://longreads.github.io/</id>
 <author>
   <name>Noah</name>
-  <uri>http://localhost:4000/</uri>
+  <uri>http://longreads.github.io/</uri>
   
 </author>
 
@@ -17,13 +17,13 @@
 
 <entry>
   <title type="html"><![CDATA[Sorting bams with samtools]]></title>
-  <link rel="alternate" type="text/html" href="http://localhost:4000/samtools-sort/" />
-  <id>http://localhost:4000/samtools-sort</id>
+  <link rel="alternate" type="text/html" href="http://longreads.github.io/samtools-sort/" />
+  <id>http://longreads.github.io/samtools-sort</id>
   <published>2014-10-26T00:00:00-07:00</published>
   <updated>2014-10-26T00:00:00-07:00</updated>
   <author>
     <name>Noah</name>
-    <uri>http://localhost:4000</uri>
+    <uri>http://longreads.github.io</uri>
     
   </author>
   <content type="html">&lt;p&gt;It turns out that &lt;code&gt;samtools sort&lt;/code&gt; command line options really do matter. When sorting a large bam file, samtools creates lots of intermediate files. The merge it runs to create the final sorted bam tries to read from all of them nearly simultaneously, thrashing even a pretty decent RAID drive (the read head on the drives are spending more time moving between files than actually reading any single file).&lt;/p&gt;
@@ -36,7 +36,7 @@
 
 &lt;p&gt;Also, remember that newer versions of samtools sort can be parallelized to some extent using the &lt;code&gt;-@&lt;/code&gt; option, eg &lt;code&gt;-@4&lt;/code&gt; to specify 4 threads. Note that the memory allocation above is per thread, so in our example, we’d need about 4 x 5 = 20 GB of RAM.&lt;/p&gt;
 
-  &lt;p&gt;&lt;a href=&quot;http://localhost:4000/samtools-sort/&quot;&gt;Sorting bams with samtools&lt;/a&gt; was originally published by Noah at &lt;a href=&quot;http://localhost:4000&quot;&gt;Long Reads&lt;/a&gt; on October 26, 2014.&lt;/p&gt;</content>
+  &lt;p&gt;&lt;a href=&quot;http://longreads.github.io/samtools-sort/&quot;&gt;Sorting bams with samtools&lt;/a&gt; was originally published by Noah at &lt;a href=&quot;http://longreads.github.io&quot;&gt;Long Reads&lt;/a&gt; on October 26, 2014.&lt;/p&gt;</content>
 </entry>
 
 </feed>
