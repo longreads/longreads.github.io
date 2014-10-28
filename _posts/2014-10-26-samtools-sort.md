@@ -8,7 +8,7 @@ comments: true
 
 It turns out that `samtools sort` command line options really do matter. When sorting a large bam file, samtools creates lots of intermediate files. The merge it runs to create the final sorted bam tries to read from all of them nearly simultaneously, thrashing even a pretty decent RAID drive (the read head on the drives are spending more time moving between files than actually reading any single file).
 
-A partial solution lies in increasing the amount of memory used by specifying the `-m` option, for example `-m 5G` to give each samtools thread 5GB of memory. The larger the amount of memory, the fewer intermediate files create, the less thrashing involved in the merge step.
+A partial solution lies in increasing the amount of memory used by specifying the `-m` option, for example `-m 5G` to give each samtools thread 5GB of memory. The larger the amount of memory, the fewer intermediate files created, the less thrashing involved in the merge step.
 
 In my case, time to sort a 30x whole-genome BAM file went from days down to hours simply by specifying `-m 10G` rather than the default of 768M.
 
