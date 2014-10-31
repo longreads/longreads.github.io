@@ -99,15 +99,15 @@
   </div>
   <!-- <div id="index"> -->
     <!-- <h3><a href="http://longreads.github.io/posts/">Recent Posts</a></h3> -->
+    <article class="post">
       
 
-    <article class="post">
     <div class="headline-wrap">
       
         <h1><a href="http://longreads.github.io/one-line-parallelization/" rel="bookmark" title="One-line parallelization">One-line parallelization</a></h1>
       
-
     </div><!--/ .headline-wrap -->
+
     <div class="article-wrap">
       <p><b>2014-10-30</b> &nbsp; Say you just sorted a whole bunch of bam files and now want to create an index for each.</p>
 
@@ -143,21 +143,14 @@
       
     </div><!-- /.article-wrap -->
 
-    <!-- <article>
-      
-        <h2><a href="http://longreads.github.io/one-line-parallelization/" title="One-line parallelization">One-line parallelization</a></h2>
-        <p>Using GNU parallel to parallelize shell commands -- 2014-10-30</p>
-      
-    </article> -->
       
 
-    <article class="post">
     <div class="headline-wrap">
       
         <h1><a href="http://longreads.github.io/samtools-sort/" rel="bookmark" title="Sorting bams with samtools">Sorting bams with samtools</a></h1>
       
-
     </div><!--/ .headline-wrap -->
+
     <div class="article-wrap">
       <p><b>2014-10-26</b> &nbsp; It turns out that <code>samtools sort</code> command line options really do matter. When sorting a large bam file, samtools creates lots of intermediate files. The merge it runs to create the final sorted bam tries to read from all of them nearly simultaneously, thrashing even a pretty decent RAID drive (the read head on the drives are spending more time moving between files than actually reading any single file).</p>
 
@@ -172,22 +165,20 @@
       
     </div><!-- /.article-wrap -->
 
-    <!-- <article>
-      
-        <h2><a href="http://longreads.github.io/samtools-sort/" title="Sorting bams with samtools">Sorting bams with samtools</a></h2>
-        <p>In which samtools sort speed is discussed -- 2014-10-26</p>
-      
-    </article> -->
     
   <!-- </div> --><!-- /#index -->
-  <hr />
-<div><h2><a href="http://longreads.github.io/posts/">View all posts</a></h2></div>
+    </article>
+
+
 
 </div><!-- /#main -->
 
 
 <div class="footer-wrap">
+
   <footer>
+  <!-- <hr /> -->
+    <h2><a href="http://longreads.github.io/posts/">View all posts</a></h2>
     
 
 <span>&copy; 2014 Noah. Powered by <a href="http://jekyllrb.com">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/">Minimal Mistakes</a> theme.</span>
