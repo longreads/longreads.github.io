@@ -4,13 +4,61 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://longreads.github.io/feed.xml" />
 <link rel="alternate" type="text/html" href="http://longreads.github.io" />
-<updated>2014-10-26T22:22:33-07:00</updated>
+<updated>2014-10-30T21:36:36-07:00</updated>
 <id>http://longreads.github.io/</id>
 <author>
   <name>Noah</name>
   <uri>http://longreads.github.io/</uri>
   
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[One-line parallelization]]></title>
+  <link rel="alternate" type="text/html" href="http://longreads.github.io/one-line-parallelization/" />
+  <id>http://longreads.github.io/one-line-parallelization</id>
+  <published>2014-10-30T00:00:00-07:00</published>
+  <updated>2014-10-30T00:00:00-07:00</updated>
+  <author>
+    <name>Noah</name>
+    <uri>http://longreads.github.io</uri>
+    
+  </author>
+  <content type="html">&lt;p&gt;Say you just sorted a whole bunch of bam files and now want to create an index for each.&lt;/p&gt;
+
+&lt;p&gt;The obvious (but wrong) solution would be &lt;code&gt;samtools index *.sorted.bam&lt;/code&gt;. Wrong, because samtools index only takes a single input bam file path.&lt;/p&gt;
+
+&lt;p&gt;The next obvious (correct) solution might be:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; i in *.sorted.bam
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+	samtools index &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;But who wants to type all that? And anyways, this is a post about running things in parallel, which this is not.&lt;/p&gt;
+
+&lt;p&gt;Enter the solution using &lt;a href=&quot;http://www.gnu.org/software/parallel/&quot;&gt;GNU parallel&lt;/a&gt;: &lt;code&gt;ls *.sorted.bam | parallel -j4 samtools index {}&lt;/code&gt;. Simple, runs 4 processes in parallel until they all finish.&lt;/p&gt;
+
+&lt;p&gt;Installing parallel is as easy as &lt;code&gt;brew install parallel&lt;/code&gt; (on OS X with &lt;a href=&quot;http://brew.sh&quot;&gt;homebrew&lt;/a&gt; installed), or &lt;code&gt;sudo apt-get install parallel&lt;/code&gt; (on Ubuntu et al; may need an &lt;a href=&quot;http://askubuntu.com/questions/12764/where-do-i-get-a-package-for-gnu-parallel&quot;&gt;extra command&lt;/a&gt; depending on your version).&lt;/p&gt;
+
+&lt;p&gt;A quick intro to parallel:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;inputs can be passed to parallel by piping them in, as above&lt;/li&gt;
+  &lt;li&gt;alternately, you can specify them using &lt;a href=&quot;http://www.gnu.org/software/parallel/parallel_tutorial.html&quot;&gt;this format&lt;/a&gt;: &lt;code&gt;parallel echo {} ::: A B C&lt;/code&gt;, which echos A, B, and C (each separately, in a random order)&lt;/li&gt;
+  &lt;li&gt;The &lt;code&gt;{}&lt;/code&gt; will be replaced by the inputs as given. You can also lop off the file name extension using &lt;code&gt;{.}&lt;/code&gt;, for example: &lt;code&gt;ls *.bam | parallel echo samtools sort {} {.}.sorted&lt;/code&gt;, which issues commands of the variety &lt;code&gt;samtools sort mysample.bam mysample.sorted&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;the &lt;code&gt;--dryrun&lt;/code&gt; option will echo the commands back to you without running them. I find it easier to just type the word “echo” before my command&lt;/li&gt;
+  &lt;li&gt;by default the output from each command will only be printed to stdout after the command has completed; to intersperse output from all commands in real time, use the &lt;code&gt;-u&lt;/code&gt; (“ungroup”) argument to parallel&lt;/li&gt;
+  &lt;li&gt;by default, the number of processes is the number of cores available on the computer. Use &lt;code&gt;-j n&lt;/code&gt; to specify &lt;code&gt;n&lt;/code&gt; jobs in parallel&lt;/li&gt;
+  &lt;li&gt;to run more complex commands using parallel, you may need to use quotation marks around the command&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;A note of caution: monitor your CPU usage when running jobs in parallel. If your processes aren’t getting up to 100% CPU usage each, this might be indicative of an file read/write bottleneck, and reducing &lt;code&gt;-j&lt;/code&gt; might actually help your overall runtime. For example, running &lt;code&gt;samtools sort&lt;/code&gt; in parallel on lots of files exacerbates the thrashing problem &lt;a href=&quot;/samtools-sort/&quot;&gt;described previously&lt;/a&gt; because there even more files being read simultaneously.&lt;/p&gt;
+
+  &lt;p&gt;&lt;a href=&quot;http://longreads.github.io/one-line-parallelization/&quot;&gt;One-line parallelization&lt;/a&gt; was originally published by Noah at &lt;a href=&quot;http://longreads.github.io&quot;&gt;Long Reads&lt;/a&gt; on October 30, 2014.&lt;/p&gt;</content>
+</entry>
 
 
   
@@ -28,7 +76,7 @@
   </author>
   <content type="html">&lt;p&gt;It turns out that &lt;code&gt;samtools sort&lt;/code&gt; command line options really do matter. When sorting a large bam file, samtools creates lots of intermediate files. The merge it runs to create the final sorted bam tries to read from all of them nearly simultaneously, thrashing even a pretty decent RAID drive (the read head on the drives are spending more time moving between files than actually reading any single file).&lt;/p&gt;
 
-&lt;p&gt;A partial solution lies in increasing the amount of memory used by specifying the &lt;code&gt;-m&lt;/code&gt; option, for example &lt;code&gt;-m 5G&lt;/code&gt; to give each samtools thread 5GB of memory. The larger the amount of memory, the fewer intermediate files create, the less thrashing involved in the merge step.&lt;/p&gt;
+&lt;p&gt;A partial solution lies in increasing the amount of memory used by specifying the &lt;code&gt;-m&lt;/code&gt; option, for example &lt;code&gt;-m 5G&lt;/code&gt; to give each samtools thread 5GB of memory. The larger the amount of memory, the fewer intermediate files created, the less thrashing involved in the merge step.&lt;/p&gt;
 
 &lt;p&gt;In my case, time to sort a 30x whole-genome BAM file went from days down to hours simply by specifying &lt;code&gt;-m 10G&lt;/code&gt; rather than the default of 768M.&lt;/p&gt;
 

@@ -3,6 +3,14 @@
   
   
   <url>
+    <loc>http://longreads.github.io/one-line-parallelization/</loc>
+    
+    <lastmod>2014-10-30T00:00:00-07:00</lastmod>
+    
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
     <loc>http://longreads.github.io/samtools-sort/</loc>
     
     <lastmod>2014-10-26T00:00:00-07:00</lastmod>
@@ -13,28 +21,28 @@
   
   <url>
     <loc>http://longreads.github.io/</loc>
-    <lastmod>2014-10-26T22:22:33-07:00</lastmod>
+    <lastmod>2014-10-30T21:38:26-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>http://longreads.github.io/theme-setup/</loc>
-    <lastmod>2014-10-26T22:22:33-07:00</lastmod>
+    <lastmod>2014-10-30T21:38:26-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://longreads.github.io/posts/</loc>
-    <lastmod>2014-10-26T22:22:33-07:00</lastmod>
+    <lastmod>2014-10-30T21:38:26-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://longreads.github.io/about/</loc>
-    <lastmod>2014-10-26T22:22:33-07:00</lastmod>
+    <lastmod>2014-10-30T21:38:26-07:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

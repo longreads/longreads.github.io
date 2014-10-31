@@ -104,6 +104,56 @@
     <article class="post">
     <div class="headline-wrap">
       
+        <h1><a href="http://longreads.github.io/one-line-parallelization/" rel="bookmark" title="One-line parallelization">One-line parallelization</a></h1>
+      
+
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><b>2014-10-30</b> &nbsp; Say you just sorted a whole bunch of bam files and now want to create an index for each.</p>
+
+<p>The obvious (but wrong) solution would be <code>samtools index *.sorted.bam</code>. Wrong, because samtools index only takes a single input bam file path.</p>
+
+<p>The next obvious (correct) solution might be:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">for</span> i in *.sorted.bam
+<span class="k">do</span>
+	samtools index <span class="nv">$i</span>
+<span class="k">done</span></code></pre></div>
+
+<p>But who wants to type all that? And anyways, this is a post about running things in parallel, which this is not.</p>
+
+<p>Enter the solution using <a href="http://www.gnu.org/software/parallel/">GNU parallel</a>: <code>ls *.sorted.bam | parallel -j4 samtools index {}</code>. Simple, runs 4 processes in parallel until they all finish.</p>
+
+<p>Installing parallel is as easy as <code>brew install parallel</code> (on OS X with <a href="http://brew.sh">homebrew</a> installed), or <code>sudo apt-get install parallel</code> (on Ubuntu et al; may need an <a href="http://askubuntu.com/questions/12764/where-do-i-get-a-package-for-gnu-parallel">extra command</a> depending on your version).</p>
+
+<p>A quick intro to parallel:</p>
+
+<ul>
+  <li>inputs can be passed to parallel by piping them in, as above</li>
+  <li>alternately, you can specify them using <a href="http://www.gnu.org/software/parallel/parallel_tutorial.html">this format</a>: <code>parallel echo {} ::: A B C</code>, which echos A, B, and C (each separately, in a random order)</li>
+  <li>The <code>{}</code> will be replaced by the inputs as given. You can also lop off the file name extension using <code>{.}</code>, for example: <code>ls *.bam | parallel echo samtools sort {} {.}.sorted</code>, which issues commands of the variety <code>samtools sort mysample.bam mysample.sorted</code>.</li>
+  <li>the <code>--dryrun</code> option will echo the commands back to you without running them. I find it easier to just type the word “echo” before my command</li>
+  <li>by default the output from each command will only be printed to stdout after the command has completed; to intersperse output from all commands in real time, use the <code>-u</code> (“ungroup”) argument to parallel</li>
+  <li>by default, the number of processes is the number of cores available on the computer. Use <code>-j n</code> to specify <code>n</code> jobs in parallel</li>
+  <li>to run more complex commands using parallel, you may need to use quotation marks around the command</li>
+</ul>
+
+<p>A note of caution: monitor your CPU usage when running jobs in parallel. If your processes aren’t getting up to 100% CPU usage each, this might be indicative of an file read/write bottleneck, and reducing <code>-j</code> might actually help your overall runtime. For example, running <code>samtools sort</code> in parallel on lots of files exacerbates the thrashing problem <a href="/samtools-sort/">described previously</a> because there even more files being read simultaneously.</p>
+
+      
+    </div><!-- /.article-wrap -->
+
+    <!-- <article>
+      
+        <h2><a href="http://longreads.github.io/one-line-parallelization/" title="One-line parallelization">One-line parallelization</a></h2>
+        <p>Using GNU parallel to parallelize shell commands -- 2014-10-30</p>
+      
+    </article> -->
+      
+
+    <article class="post">
+    <div class="headline-wrap">
+      
         <h1><a href="http://longreads.github.io/samtools-sort/" rel="bookmark" title="Sorting bams with samtools">Sorting bams with samtools</a></h1>
       
 
@@ -111,7 +161,7 @@
     <div class="article-wrap">
       <p><b>2014-10-26</b> &nbsp; It turns out that <code>samtools sort</code> command line options really do matter. When sorting a large bam file, samtools creates lots of intermediate files. The merge it runs to create the final sorted bam tries to read from all of them nearly simultaneously, thrashing even a pretty decent RAID drive (the read head on the drives are spending more time moving between files than actually reading any single file).</p>
 
-<p>A partial solution lies in increasing the amount of memory used by specifying the <code>-m</code> option, for example <code>-m 5G</code> to give each samtools thread 5GB of memory. The larger the amount of memory, the fewer intermediate files create, the less thrashing involved in the merge step.</p>
+<p>A partial solution lies in increasing the amount of memory used by specifying the <code>-m</code> option, for example <code>-m 5G</code> to give each samtools thread 5GB of memory. The larger the amount of memory, the fewer intermediate files created, the less thrashing involved in the merge step.</p>
 
 <p>In my case, time to sort a 30x whole-genome BAM file went from days down to hours simply by specifying <code>-m 10G</code> rather than the default of 768M.</p>
 
@@ -150,6 +200,24 @@
 <script src="http://longreads.github.io/assets/js/scripts.min.js"></script>
 
 
+
+<!-- Start of StatCounter Code for Default Guide -->
+<script type="text/javascript">
+var sc_project=10103740; 
+var sc_invisible=1; 
+var sc_security="0d8dcd0b"; 
+var scJsHost = (("https:" == document.location.protocol) ?
+"https://secure." : "http://www.");
+document.write("<sc"+"ript type='text/javascript' src='" +
+scJsHost+
+"statcounter.com/counter/counter.js'></"+"script>");
+</script>
+<noscript><div class="statcounter"><a title="shopify visitor
+statistics" href="http://statcounter.com/shopify/"
+target="_blank"><img class="statcounter"
+src="http://c.statcounter.com/10103740/0/0d8dcd0b/1/"
+alt="shopify visitor statistics"></a></div></noscript>
+<!-- End of StatCounter Code for Default Guide -->
   
 </body>
 </html>
